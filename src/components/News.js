@@ -5,16 +5,16 @@ import Spinner from './Spinner'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 const News = (props)=>{
-    const [articles,setarticles] = useState([ ]);
+    const [articles,setarticles] = useState([]);
     const [loading,setloading] = useState(true);
     const [page,setpage] = useState(1);
     const [totalResults,settotalResults] = useState(0);
-
 
     const capitalize = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    document.title=`${capitalize(props.category)}-YesterdayNews`
     const  updateNews = async()=> {
         props.setprogress(10)
         const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page}&pagesize=${props.pagesize}`
@@ -35,23 +35,21 @@ const News = (props)=>{
     },[])
 
    const fetchMoreData = async()=>{
-        setpage(page + 1,async () => {
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page}&pagesize=${props.pagesize}`
+        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page+1}&pagesize=${props.pagesize}`
+        setpage(page + 1)
         let data = await fetch(url);
         let parseData = await data.json();
         setarticles(articles.concat(parseData.articles))
         settotalResults(parseData.totalResults)
-        });
     }
-
+    
         return (
-            <div >
-                <div className="text-center"><h1>Yesterday_News Top {capitalize(props.category)} Headline</h1></div>
-                {loading && <Spinner/>}
+            <>
+                <div className="text-center"><h1 style={{marginTop:'60px'}}>Yesterday_News Top {capitalize(props.category)} Headline</h1></div>
                 <InfiniteScroll 
                     dataLength={articles.length}
                     next={fetchMoreData}
-                    hasMore={articles.length !== totalResults}
+                    hasMore={loading || articles.length !== totalResults}
                     loader={<Spinner/>}
                     >
                     <div className="container">    
@@ -65,7 +63,7 @@ const News = (props)=>{
                     </div>
                     </div>
                     </InfiniteScroll>
-            </div>
+            </>
         )
 }
 

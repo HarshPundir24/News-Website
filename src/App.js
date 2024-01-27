@@ -17,7 +17,7 @@ const App=()=>{
         color='#f11946'
         progree={progress}
       />
-        <Navbar/>
+        <Navbar />
         <Routes>
             <Route path='/' index element={<News setprogress={setprogress} apikey={apikey} key="general" pagesize={6} country="in" category="general"/>}/>
             <Route exact path="/business" element={<News setprogress={setprogress} apikey={apikey} key="business" pagesize={6} country="in" category="business" />} />
