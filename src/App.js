@@ -13,10 +13,7 @@ const App=()=>{
     return(
       <div>
         <BrowserRouter >
-        <LoadingBar
-        color='#f11946'
-        progree={progress}
-      />
+        <LoadingBar color='#f11946' progress={progress}/>
         <Navbar />
         <Routes>
             <Route path='/' index element={<News setprogress={setprogress} apikey={apikey} key="general" pagesize={6} country="in" category="general"/>}/>
